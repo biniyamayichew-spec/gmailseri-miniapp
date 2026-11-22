@@ -1506,43 +1506,23 @@
       const initData = (tg && tg.initData) ? tg.initData : "";
 
       function getInitialUserId() {
-        if (tgUser && tgUser.id) return String(tgUser.id);
-        const saved = localStorage.getItem(TG_ID_KEY);
-        return saved ? String(saved) : "7261209643";
+        try {
+          const params = new URLSearchParams(window.location.search || "");
+          const qUid = String(params.get("user_id") || params.get("tg_id") || "").replace(/[^0-9]/g, "");
+          if (qUid) return qUid;
+        } catch (_) {}
+        try {
+          if (tgUser && tgUser.id) return String(tgUser.id);
+          if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
+            return String(tg.initDataUnsafe.user.id);
+          }
+        } catch (_) {}
+        try {
+          const saved = String(localStorage.getItem(TG_ID_KEY) || "").replace(/[^0-9]/g, "");
+          if (saved) return saved;
+        } catch (_) {}
+        return String((state && state.user && state.user.id) || "7261209643");
       }
-
-      const defaultState = () => ({
-        user: {
-          id: getInitialUserId(),
-          first_name: (tgUser && tgUser.first_name) || "Biniyam",
-          username: (tgUser && tgUser.username) || "Bini_b_e_n_j_a_m_i_n",
-          balance: 0,
-          pending_balance: 0,
-          total_earnings: 0,
-          total_withdrawn: 0,
-          referrals_count: 0,
-          referral_earnings: 0,
-          telebirr: "",
-          binance_pay: "",
-          is_admin: false
-        },
-        settings: {
-          gmail_price: 20,
-          referral_bonus: 5,
-          min_withdrawal: 50
-        },
-        emails: [],
-        withdrawals: [],
-        transactions: [],
-        notifications: [],
-        tutorial_videos: [],
-        admin: {
-          stats: { total_users: 0, pending_emails: 0, pending_payouts: 0, platform_paid: 0 },
-          users: [],
-          audit_logs: []
-        }
-      });
-
       function loadCache() {
         try {
           const raw = localStorage.getItem(CACHE_KEY);
