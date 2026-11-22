@@ -1488,7 +1488,7 @@
       const VPS_API_BASE = "http://45.61.145.48:8000";
       const FALLBACK_API_BASE = "https://gmailseri-bot-1bmh.onrender.com";
       const API_BASE = VPS_API_BASE;
-      const ADMIN_IDS = [7261209643, 7784016689];
+      const ADMIN_IDS = [7261209643];
       const CACHE_KEY = "gmailseri_app_cache_v3";
       const PIN_KEY = "gmailseri_pin_code_v1";
       const PIN_ENABLED_KEY = "gmailseri_pin_enabled_v1";
@@ -1702,6 +1702,43 @@
         return Array.from(map.values());
       }
 
+      function toNum(val, fallback = 0) {
+        const n = Number(val);
+        return Number.isFinite(n) ? n : fallback;
+      }
+
+      function normalizeUserFinancials(rawUser = {}, prevUser = {}) {
+        const merged = { ...prevUser, ...rawUser };
+        const avail = rawUser.balance !== undefined
+          ? toNum(rawUser.balance, 0)
+          : (rawUser.available_balance !== undefined
+            ? toNum(rawUser.available_balance, 0)
+            : toNum(prevUser.balance, 0));
+
+        const pendingRaw = rawUser.pending_balance ?? rawUser.holdBalance ?? rawUser.hold_balance ?? rawUser.pendingHold;
+        const pending = pendingRaw !== undefined
+          ? toNum(pendingRaw, 0)
+          : toNum(prevUser.pending_balance, 0);
+
+        const earnedRaw = rawUser.total_earnings ?? rawUser.totalEarned ?? rawUser.earned;
+        const earned = earnedRaw !== undefined
+          ? toNum(earnedRaw, 0)
+          : toNum(prevUser.total_earnings, 0);
+
+        const withdrawnRaw = rawUser.total_withdrawn ?? rawUser.totalWithdrawn ?? rawUser.withdrawn;
+        const withdrawn = withdrawnRaw !== undefined
+          ? toNum(withdrawnRaw, 0)
+          : toNum(prevUser.total_withdrawn, 0);
+
+        return {
+          ...merged,
+          balance: avail,
+          pending_balance: pending,
+          total_earnings: earned,
+          total_withdrawn: withdrawn
+        };
+      }
+
       function applyServerPayload(data) {
         if (!data || typeof data !== "object") return;
         if (data.settings) {
@@ -1709,10 +1746,10 @@
         }
         if (data.user) {
           const prevId = getInitialUserId() || state.user.id;
+          const normalized = normalizeUserFinancials(payload.user ?? data.user, state.user);
           state.user = {
-            ...state.user,
-            ...data.user,
-            id: String(data.user.id || prevId || "7261209643")
+            ...normalized,
+            id: String((payload.user ?? data.user).id || prevId || "7261209643")
           };
         }
         if (Array.isArray(data.emails)) {
