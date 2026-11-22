@@ -2031,8 +2031,10 @@
           if (showSyncedToast) {
             showToast("Synced with server", "success");
           }
-        } catch (_) {
-          // Frontend-first: keep cached UI clean without blocking errors
+        } catch (err) {
+          if (showSyncedToast && typeof showToast === "function") {
+            showToast("Backend sync failed — check server logs", "error");
+          }
         }
       }
 
