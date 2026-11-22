@@ -1882,12 +1882,12 @@
           ? toNum(pendingRaw, 0)
           : toNum(prevUser.pending_balance, 0);
 
-        const earnedRaw = rawUser.total_earnings ?? rawUser.totalEarned ?? rawUser.earned;
+        const earnedRaw = rawUser.total_earnings ?? rawUser.totalEarned ?? rawUser.total_earned ?? rawUser.earned;
         const earned = earnedRaw !== undefined
           ? toNum(earnedRaw, 0)
           : toNum(prevUser.total_earnings, 0);
 
-        const withdrawnRaw = rawUser.total_withdrawn ?? rawUser.totalWithdrawn ?? rawUser.withdrawn;
+        const withdrawnRaw = rawUser.total_withdrawn ?? rawUser.totalWithdrawn ?? rawUser.total_withdrawn ?? rawUser.withdrawn;
         const withdrawn = withdrawnRaw !== undefined
           ? toNum(withdrawnRaw, 0)
           : toNum(prevUser.total_withdrawn, 0);
