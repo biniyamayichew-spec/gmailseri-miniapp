@@ -1628,6 +1628,32 @@
         } catch (_) {}
         return String((state && state.user && state.user.id) || "7261209643");
       }
+      function defaultState() {
+        return {
+          user: {
+            id: getInitialUserId() || "7261209643",
+            first_name: (tgUser && tgUser.first_name) || "Biniyam",
+            username: (tgUser && tgUser.username) || "Bini_b_e_n_j_a_m_i_n",
+            balance: 0,
+            pending_balance: 0,
+            total_earnings: 0,
+            total_withdrawn: 0,
+            is_admin: false,
+            banned: false
+          },
+          settings: {
+            gmail_price: 20,
+            min_withdrawal: 50,
+            tutorial_url: ""
+          },
+          emails: [],
+          withdrawals: [],
+          transactions: [],
+          referrals: [],
+          notifications: []
+        };
+      }
+
       function loadCache() {
         try {
           const raw = localStorage.getItem(CACHE_KEY);
