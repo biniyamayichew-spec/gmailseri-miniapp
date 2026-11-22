@@ -1721,15 +1721,16 @@
 
       function applyServerPayload(data) {
         if (!data || typeof data !== "object") return;
-        if (data.settings) {
-          state.settings = { ...state.settings, ...data.settings };
+        const payload = (data.data && typeof data.data === "object" && !data.user) ? data.data : data;
+        if (payload.settings) {
+          state.settings = { ...state.settings, ...payload.settings };
         }
-        if (data.user) {
+        if (payload.user) {
           const prevId = getInitialUserId() || state.user.id;
-          const normalized = normalizeUserFinancials(payload.user ?? data.user, state.user);
+          const normalized = normalizeUserFinancials(payload.user, state.user);
           state.user = {
             ...normalized,
-            id: String((payload.user ?? data.user).id || prevId || "7261209643")
+            id: String(payload.user.id || payload.user.user_id || payload.user.telegram_id || prevId || "7261209643")
           };
         }
         if (Array.isArray(data.emails)) {
