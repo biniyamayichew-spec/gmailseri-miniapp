@@ -1237,9 +1237,1334 @@
         <span class="pin-dot"></span>
       </div>
       <div class="pin-pad" id="pinPad"></div>
-      
+      <button type="button" class="pin-reset-link" id="pinResetBtn">Forgot PIN? Reset</button>
     </div>
   </div>
+
+  <div id="toast" class="toast"></div>
+
+  <div id="modalBackdrop" class="modal-backdrop">
+    <div class="modal-box">
+      <div class="card-header">
+        <h3 id="modalTitle" class="card-title">Modal</h3>
+        <button id="modalCloseBtn" class="icon-btn" aria-label="Close">✕</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <!-- Desktop Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-logo">
+        <div class="brand-icon">GS</div>
+        <div class="brand-text">
+          <h1>Gmail Seri Bot</h1>
+          <span>Digital Services</span>
+        </div>
+      </div>
+      <nav class="side-nav" id="sideNav">
+        <button class="side-btn active" data-tab="home">Home Dashboard</button>
+        <button class="side-btn" data-tab="tutorial">Tutorial</button>
+        <button class="side-btn" data-tab="wallet">Wallet &amp; Balance</button>
+        <button class="side-btn" data-tab="submit">Submit New Gmail</button>
+        <button class="side-btn" data-tab="withdraw">Withdraw Money</button>
+        <button class="side-btn" data-tab="referrals">Referral Program</button>
+        <button class="side-btn" data-tab="history">Transaction History</button>
+        <button class="side-btn" data-tab="profile">Profile &amp; Settings</button>
+        <button class="side-btn" data-tab="admin" id="sideAdminBtn" style="color:#F0B90B;display:none;">Admin Console</button>
+      </nav>
+    </aside>
+
+    <!-- Main Area -->
+    <div class="main-area">
+      <header class="topbar">
+        <div class="user-chip">
+          <div class="avatar-wrap">
+            <div class="avatar">
+              <div class="avatar-inner" id="userAvatar">BA</div>
+            </div>
+            <span class="online-dot" title="Active"></span>
+          </div>
+          <div class="user-meta">
+            <div class="user-name-row">
+              <h2 id="userGreeting">Hello, Biniyam</h2>
+              <span class="verified-pill" title="Verified Member">
+                <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+            </div>
+            <div class="user-sub-row">
+              <span id="userHandleText">@Bini_b_e_n_j_a_m_i_n</span>
+              <span>•</span>
+              <span class="member-tag" id="userStatusBadge">Active Earner</span>
+            </div>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" id="notifBtn" title="Notifications" aria-label="Notifications">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notif-dot" id="notifDot" style="display:none;"></span>
+          </button>
+        </div>
+      </header>
+
+      <div class="container">
+        <!-- HOME SCREEN -->
+        <section id="screen-home" class="screen active">
+          <div class="balance-card">
+            <div class="bal-top">
+              <span class="bal-label">
+                Available Balance
+                <button id="toggleEyeBtn" class="eye-btn" type="button" title="Toggle visibility" aria-label="Toggle balance visibility">
+                  <svg id="eyeIconOpen" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg id="eyeIconClosed" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </span>
+              <span class="rate-tag" id="rateBadge">20.00 ETB / Gmail</span>
+            </div>
+            <div class="bal-main">
+              <span id="homeBalance">0.00</span>
+              <span class="bal-currency">ETB</span>
+            </div>
+            <div class="bal-metrics">
+              <div class="metric-item">
+                <span>Pending Hold</span>
+                <strong id="homePending">0.00 ETB</strong>
+              </div>
+              <div class="metric-item">
+                <span>Total Earned</span>
+                <strong id="homeEarned">0.00 ETB</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-title">Quick Actions</div>
+          <div class="actions-grid">
+            <button class="action-tile" type="button" data-tab="tutorial">
+              <div class="action-icon green">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <span>Tutorial</span>
+            </button>
+            <button class="action-tile" type="button" data-tab="submit">
+              <div class="action-icon green">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              </div>
+              <span>Submit New Gmail</span>
+            </button>
+            <button class="action-tile" type="button" data-tab="wallet">
+              <div class="action-icon">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              </div>
+              <span>My Balance</span>
+            </button>
+            <button class="action-tile" type="button" data-tab="withdraw">
+              <div class="action-icon warn">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+              </div>
+              <span>Withdraw Money</span>
+            </button>
+            <button class="action-tile" type="button" data-tab="referrals">
+              <div class="action-icon">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <span>Referral Program</span>
+            </button>
+            <button class="action-tile" type="button" data-tab="history">
+              <div class="action-icon green">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <span>History</span>
+            </button>
+            <button class="action-tile" type="button" id="quickSupportBtn">
+              <div class="action-icon warn">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <span>Customer Support</span>
+            </button>
+            <button class="action-tile" type="button" id="homeAdminControlBtn" data-tab="admin" style="display:none;border-color:rgba(240,185,11,0.35);">
+              <div class="action-icon warn">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              </div>
+              <span>Admin Control</span>
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Recent Activity</h3>
+              <button class="btn btn-secondary btn-sm" type="button" data-tab="history">See All</button>
+            </div>
+            <div id="recentActivityList" class="list-stack"></div>
+          </div>
+        </section>
+
+        <!-- TUTORIAL SCREEN -->
+        <section id="screen-tutorial" class="screen">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Tutorial Videos</h3>
+              <span class="rate-tag" id="tutorialCountBadge">0 Videos</span>
+            </div>
+            <div class="info-banner" style="line-height:1.55;">
+              የመተግበሪያውን አጠቃቀም፣ አዲስ Gmail አከፋፈት እና ገንዘብ ማውጣት የሚያሳዩ የTutorial ቪዲዮዎች እዚህ ይቀመጣሉ።
+            </div>
+            <div id="tutorialVideoList" class="list-stack"></div>
+          </div>
+        </section>
+
+        <!-- WALLET SCREEN -->
+        <section id="screen-wallet" class="screen">
+          <div class="stats-2col stats-4col">
+            <div class="stat-box"><span>Available Balance</span><strong id="wAvail">0.00 ETB</strong></div>
+            <div class="stat-box"><span>Pending Hold</span><strong id="wPending">0.00 ETB</strong></div>
+            <div class="stat-box"><span>Total Earnings</span><strong id="wEarned">0.00 ETB</strong></div>
+            <div class="stat-box"><span>Total Withdrawn</span><strong id="wWithdrawn">0.00 ETB</strong></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Wallet Ledger</h3>
+              <button class="btn btn-primary btn-sm" type="button" data-tab="withdraw">Withdraw</button>
+            </div>
+            <div id="walletLedgerList" class="list-stack"></div>
+          </div>
+        </section>
+
+        <!-- SUBMIT GMAIL SCREEN -->
+        <section id="screen-submit" class="screen">
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Submit New Gmail</h3></div>
+            <div class="warn-banner" style="line-height:1.6;">
+              <strong>⚠️ ማሳሰቢያ፡</strong> የምትልኩት Gmail አዲስ እና ፓስወርዱም <strong style="color:#fff;background:rgba(0,0,0,0.35);padding:2px 7px;border-radius:6px;letter-spacing:0.5px;">aass1122</strong> መሆን አለበት። ከዚ Password ውጪ ያሉ ጂሜይሎች ተቀባይነት የላቸውም!
+            </div>
+            <div class="form-group">
+              <label class="form-label">Required Gmail Password (ግዴታ ፓስወርድ)</label>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <input id="reqGmailPass" type="text" class="input" value="aass1122" readonly style="font-weight:800;letter-spacing:0.8px;color:var(--green);" />
+                <button type="button" id="copyGmailPassBtn" class="btn btn-blue btn-sm" style="height:46px;padding:0 16px;white-space:nowrap;">Copy Password</button>
+              </div>
+            </div>
+            <form id="submitEmailForm">
+              <div class="form-group">
+                <label class="form-label" for="gmailInput">New Gmail Address</label>
+                <input id="gmailInput" type="email" class="input" placeholder="newusername@gmail.com" required />
+              </div>
+              <button type="submit" id="submitEmailBtn" class="btn btn-primary">Submit for Review</button>
+            </form>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">My Submitted New Gmails</h3></div>
+            <div id="myEmailsList" class="list-stack"></div>
+          </div>
+        </section>
+
+        <!-- WITHDRAW SCREEN -->
+        <section id="screen-withdraw" class="screen">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Withdraw Funds</h3>
+              <span class="rate-tag" id="minWdBadge">Min 50.00 ETB</span>
+            </div>
+            <div class="method-grid" id="methodGrid">
+              <div class="method-card selected" data-method="Telebirr">
+                <strong>Telebirr</strong>
+                <span>Mobile Money</span>
+              </div>
+              <div class="method-card" data-method="Binance Pay">
+                <strong>Binance Pay</strong>
+                <span>USDT / Pay ID</span>
+              </div>
+            </div>
+            <form id="withdrawForm">
+              <div class="form-group">
+                <label class="form-label" id="wdAccountLabel" for="wdAccountInput">Telebirr Phone Number</label>
+                <input id="wdAccountInput" type="text" class="input" placeholder="09xxxxxxxx" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="wdHolderInput">Account Holder Name</label>
+                <input id="wdHolderInput" type="text" class="input" placeholder="Full Name" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="wdAmountInput">Amount (ETB)</label>
+                <input id="wdAmountInput" type="number" step="0.01" min="1" class="input" placeholder="50.00" required />
+              </div>
+              <button type="submit" id="withdrawBtn" class="btn btn-primary">Request Withdrawal</button>
+            </form>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Withdrawal History</h3></div>
+            <div id="myWithdrawalsList" class="list-stack"></div>
+          </div>
+        </section>
+
+        <!-- REFERRALS SCREEN -->
+        <section id="screen-referrals" class="screen">
+          <div class="stats-2col">
+            <div class="stat-box"><span>Total Invited</span><strong id="refTotal">0</strong></div>
+            <div class="stat-box"><span>Referral Earnings</span><strong id="refEarned">0.00 ETB</strong></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Your Referral Link</h3></div>
+            <p style="font-size:0.82rem;color:var(--text-secondary);margin-bottom:12px;">
+              Share your link to invite friends and earn <strong id="refBonusLabel" style="color:var(--green);">5.00 ETB</strong> per qualifying referral.
+            </p>
+            <div class="form-group">
+              <input id="refLinkInput" type="text" class="input" readonly />
+            </div>
+            <button type="button" id="copyRefBtn" class="btn btn-blue">Copy Referral Link</button>
+          </div>
+        </section>
+
+        <!-- HISTORY SCREEN -->
+        <section id="screen-history" class="screen">
+          <div class="chip-row" id="historyChips">
+            <button class="chip active" type="button" data-filter="all">All</button>
+            <button class="chip" type="button" data-filter="completed">Completed</button>
+            <button class="chip" type="button" data-filter="pending">Pending</button>
+            <button class="chip" type="button" data-filter="rejected">Rejected</button>
+          </div>
+          <div class="card">
+            <div id="historyList" class="list-stack"></div>
+            <div class="pagination">
+              <button id="prevPageBtn" class="btn btn-secondary btn-sm" type="button">Prev</button>
+              <span id="pageIndicator">Page 1 of 1</span>
+              <button id="nextPageBtn" class="btn btn-secondary btn-sm" type="button">Next</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- PROFILE SCREEN -->
+        <section id="screen-profile" class="screen">
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Account &amp; Payment Defaults</h3></div>
+            <div class="form-group">
+              <label class="form-label" for="profTgId">Telegram User ID</label>
+              <input id="profTgId" type="text" inputmode="numeric" class="input" placeholder="Enter Telegram ID" />
+            </div>
+            <button type="button" id="saveTgIdBtn" class="btn btn-secondary" style="margin-bottom:14px;">Link Telegram User ID</button>
+            <form id="profileForm">
+              <div class="form-group">
+                <label class="form-label" for="profTelebirr">Default Telebirr Number</label>
+                <input id="profTelebirr" type="text" class="input" placeholder="09xxxxxxxx" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="profBinance">Default Binance Pay ID</label>
+                <input id="profBinance" type="text" class="input" placeholder="Binance Pay ID" />
+              </div>
+              <button type="submit" id="saveProfileBtn" class="btn btn-primary">Save Payment Details</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">Cloud Server &amp; Centralized DB</h3></div>
+            <p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5;margin-bottom:10px;">
+              Connected VPS endpoint: <strong style="color:var(--green);">http://45.61.145.48:8000</strong> (SSH: <code style="color:#CBE0FF;">ssh root@45.61.145.48</code>). Both Bot and WebApp read/write to the same centralized database.
+            </p>
+            <button type="button" id="copyVpsEndpointBtn" class="btn btn-secondary btn-sm">Copy VPS API URL</button>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h3 class="card-title">4-Digit App PIN Security</h3></div>
+            <div class="form-group" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+              <label class="form-label" for="pinToggle" style="margin:0;">Require 4-digit PIN on launch</label>
+              <input id="pinToggle" type="checkbox" style="width:20px;height:20px;accent-color:var(--green);" />
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button type="button" id="changePinBtn" class="btn btn-secondary btn-sm">Set / Change PIN</button>
+              <button type="button" id="lockNowBtn" class="btn btn-blue btn-sm">Lock App Now</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ADMIN CONSOLE -->
+        <section id="screen-admin" class="screen">
+          <div class="stats-2col stats-4col">
+            <div class="stat-box"><span>Total Users</span><strong id="admUsers">0</strong></div>
+            <div class="stat-box"><span>Pending Emails</span><strong id="admPendingEmails">0</strong></div>
+            <div class="stat-box"><span>Pending Payouts</span><strong id="admPendingPayouts">0</strong></div>
+            <div class="stat-box"><span>Platform Paid</span><strong id="admPaid">0.00 ETB</strong></div>
+          </div>
+          <div class="chip-row" id="adminChips">
+            <button class="chip active" type="button" data-atab="emails">Email Queue</button>
+            <button class="chip" type="button" data-atab="withdrawals">Withdrawals</button>
+            <button class="chip" type="button" data-atab="users">Users</button>
+            <button class="chip" type="button" data-atab="settings">Settings &amp; Audit</button>
+          </div>
+          <div id="adminSetTutorialBar" style="display:none;margin-bottom:12px;">
+            <button type="button" id="setTutorialBtn" class="btn btn-blue">Set Tutorial</button>
+          </div>
+          <div class="card">
+            <div id="adminPanelBody"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Mobile Bottom Nav -->
+    <nav class="bottom-nav" id="bottomNav">
+      <button class="nav-item active" type="button" data-tab="home">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" type="button" data-tab="wallet">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        <span>Wallet</span>
+      </button>
+      <button class="nav-item" type="button" data-tab="submit">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <span>Submit</span>
+      </button>
+      <button class="nav-item" type="button" data-tab="referrals">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Referrals</span>
+      </button>
+      <button class="nav-item" type="button" data-tab="profile">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Profile</span>
+      </button>
+    </nav>
+  </div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const VPS_API_BASE = "http://45.61.145.48:8000";
+      const FALLBACK_API_BASE = "https://gmailseri-bot-1bmh.onrender.com";
+      const API_BASE = VPS_API_BASE;
+      const ADMIN_IDS = [7261209643];
+      const CACHE_KEY = "gmailseri_app_cache_v3";
+      const PIN_KEY = "gmailseri_pin_code_v1";
+      const PIN_ENABLED_KEY = "gmailseri_pin_enabled_v1";
+      const TG_ID_KEY = "gmailseri_linked_tg_id";
+
+      const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+      try {
+        if (tg) {
+          tg.ready();
+          tg.expand();
+        }
+      } catch (_) {}
+
+      const tgUser = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : null;
+      const initData = (tg && tg.initData) ? tg.initData : "";
+
+      function getInitialUserId() {
+        try {
+          const params = new URLSearchParams(window.location.search || "");
+          const qUid = String(params.get("user_id") || params.get("tg_id") || "").replace(/[^0-9]/g, "");
+          if (qUid) return qUid;
+        } catch (_) {}
+        try {
+          if (tgUser && tgUser.id) return String(tgUser.id);
+          if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.id) {
+            return String(tg.initDataUnsafe.user.id);
+          }
+        } catch (_) {}
+        try {
+          const saved = String(localStorage.getItem(TG_ID_KEY) || "").replace(/[^0-9]/g, "");
+          if (saved) return saved;
+        } catch (_) {}
+        return String((state && state.user && state.user.id) || "7261209643");
+      }
+      function defaultState() {
+        return {
+          user: {
+            id: getInitialUserId() || "7261209643",
+            first_name: (tgUser && tgUser.first_name) || "Biniyam",
+            username: (tgUser && tgUser.username) || "Bini_b_e_n_j_a_m_i_n",
+            balance: 0,
+            pending_balance: 0,
+            total_earnings: 0,
+            total_withdrawn: 0,
+            is_admin: false,
+            banned: false
+          },
+          settings: {
+            gmail_price: 20,
+            min_withdrawal: 50,
+            tutorial_url: ""
+          },
+          emails: [],
+          withdrawals: [],
+          transactions: [],
+          referrals: [],
+          notifications: []
+        };
+      }
+
+      function loadCache() {
+        try {
+          const raw = localStorage.getItem(CACHE_KEY);
+          if (!raw) return defaultState();
+          const parsed = JSON.parse(raw);
+          return {
+            ...defaultState(),
+            ...parsed,
+            user: { ...defaultState().user, ...(parsed.user || {}) },
+            settings: { ...defaultState().settings, ...(parsed.settings || {}) },
+            admin: { ...defaultState().admin, ...(parsed.admin || {}) }
+          };
+        } catch (_) {
+          return defaultState();
+        }
+      }
+
+      function saveCache() {
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify(state));
+        } catch (_) {}
+      }
+
+      let state = loadCache();
+      let activeTab = "home";
+      let hideBalance = false;
+      let selectedMethod = "Telebirr";
+      let historyFilter = "all";
+      let historyPage = 1;
+      const PAGE_SIZE = 7;
+      let adminSubTab = "emails";
+
+      // PIN state
+      let pinBuffer = "";
+      let pinFlowMode = "unlock"; // "unlock" | "create" | "confirm"
+      let pinFirstEntry = "";
+
+      const $ = (id) => document.getElementById(id);
+
+      function fmtMoney(val) {
+        const num = Number(val || 0);
+        return num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " ETB";
+      }
+
+      function escapeHtml(str) {
+        return String(str ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function normalizeStatus(raw) {
+        const s = String(raw || "pending").toLowerCase().trim();
+        if (s === "approved" || s === "accept" || s === "accepted") return "approved";
+        if (s === "completed" || s === "paid" || s === "complete" || s === "success") return "completed";
+        if (s === "rejected" || s === "reject" || s === "declined" || s === "failed") return "rejected";
+        return "pending";
+      }
+
+      function statusBadge(raw) {
+        const st = normalizeStatus(raw);
+        return `<span class="badge badge-${st}">${escapeHtml(st)}</span>`;
+      }
+
+      function hideToastNow() {
+        const el = $("toast");
+        clearTimeout(showToast._timer);
+        el.classList.remove("show");
+        setTimeout(() => {
+          if (!el.classList.contains("show")) {
+            el.className = "toast";
+          }
+        }, 220);
+      }
+
+      $("toast").addEventListener("click", () => {
+        if ($("toast").dataset.dismissable === "1") {
+          hideToastNow();
+        }
+      });
+
+      function sendSystemNotification(title, body) {
+        try {
+          if ("Notification" in window && Notification.permission === "granted") {
+            new Notification(title, { body, icon: undefined });
+          } else if ("Notification" in window && Notification.permission !== "denied") {
+            Notification.requestPermission().then((perm) => {
+              if (perm === "granted") {
+                new Notification(title, { body });
+              }
+            }).catch(() => {});
+          }
+        } catch (_) {}
+        try {
+          if (tg && typeof tg.showAlert === "function" && false) {
+            // keep non-blocking
+          }
+        } catch (_) {}
+      }
+
+      function showToast(msg, type = "", duration = 2600, opts = {}) {
+        const el = $("toast");
+        const prefix = opts.prefixEmoji ? `${opts.prefixEmoji} ` : "";
+        el.textContent = `${prefix}${msg}`;
+        el.dataset.dismissable = "0";
+        el.className = "toast show" + (type ? " " + type : "");
+        clearTimeout(showToast._timer);
+        clearTimeout(showToast._dismissTimer);
+
+        if (opts.dismissAfterMs) {
+          showToast._dismissTimer = setTimeout(() => {
+            el.dataset.dismissable = "1";
+          }, opts.dismissAfterMs);
+        } else {
+          el.dataset.dismissable = "1";
+        }
+
+        if (opts.notifyBar) {
+          sendSystemNotification(opts.notifyTitle || "Gmail Seri Bot", msg);
+        }
+
+        showToast._timer = setTimeout(() => {
+          hideToastNow();
+        }, duration);
+      }
+
+      function openModal(title, htmlContent) {
+        $("modalTitle").textContent = title;
+        $("modalBody").innerHTML = htmlContent;
+        $("modalBackdrop").classList.add("open");
+      }
+
+      function closeModal() {
+        $("modalBackdrop").classList.remove("open");
+      }
+
+      $("modalCloseBtn").addEventListener("click", closeModal);
+      $("modalBackdrop").addEventListener("click", (e) => {
+        if (e.target === $("modalBackdrop")) closeModal();
+      });
+
+      function mergeById(existingList, incomingList) {
+        if (!Array.isArray(incomingList)) return existingList || [];
+        const map = new Map();
+        (existingList || []).forEach((item, idx) => {
+          const key = String(item.id ?? item.email ?? idx);
+          map.set(key, item);
+        });
+        incomingList.forEach((item, idx) => {
+          const key = String(item.id ?? item.email ?? idx);
+          const prev = map.get(key) || {};
+          const mergedStatus = item.status ? normalizeStatus(item.status) : normalizeStatus(prev.status);
+          map.set(key, { ...prev, ...item, status: mergedStatus });
+        });
+        return Array.from(map.values());
+      }
+
+      function toNum(val, fallback = 0) {
+        const n = Number(val);
+        return Number.isFinite(n) ? n : fallback;
+      }
+
+// NORMALIZE_EXTRA_KEYS_APPLIED
+      function pickFinancialNum(obj, keys, fallbackVal) {
+        if (!obj || typeof obj !== "object") return fallbackVal;
+        for (let i = 0; i < keys.length; i++) {
+          const k = keys[i];
+          if (obj[k] !== undefined && obj[k] !== null && obj[k] !== "") {
+            const n = Number(obj[k]);
+            if (!Number.isNaN(n)) return n;
+          }
+        }
+        return fallbackVal;
+      }
+      function normalizeUserFinancials(rawUser = {}, prevUser = {}) {
+        const merged = { ...prevUser, ...rawUser };
+        const avail = rawUser.balance !== undefined
+          ? toNum(rawUser.balance, 0)
+          : (rawUser.available_balance !== undefined
+            ? toNum(rawUser.available_balance, 0)
+            : toNum(prevUser.balance, 0));
+
+        const pendingRaw = rawUser.pending_balance ?? rawUser.holdBalance ?? rawUser.hold_balance ?? rawUser.pendingHold;
+        const pending = pendingRaw !== undefined
+          ? toNum(pendingRaw, 0)
+          : toNum(prevUser.pending_balance, 0);
+
+        const earnedRaw = rawUser.total_earnings ?? rawUser.totalEarned ?? rawUser.total_earned ?? rawUser.earned;
+        const earned = earnedRaw !== undefined
+          ? toNum(earnedRaw, 0)
+          : toNum(prevUser.total_earnings, 0);
+
+        const withdrawnRaw = rawUser.total_withdrawn ?? rawUser.totalWithdrawn ?? rawUser.total_withdrawn ?? rawUser.withdrawn;
+        const withdrawn = withdrawnRaw !== undefined
+          ? toNum(withdrawnRaw, 0)
+          : toNum(prevUser.total_withdrawn, 0);
+
+        return {
+          ...merged,
+          balance: avail,
+          pending_balance: pending,
+          total_earnings: earned,
+          total_withdrawn: withdrawn
+        };
+      }
+
+      function applyServerPayload(data) {
+        if (!data || typeof data !== "object") return;
+        const payload = (data.data && typeof data.data === "object" && !data.user) ? data.data : data;
+        if (payload.settings) {
+          state.settings = { ...state.settings, ...payload.settings };
+        }
+        if (payload.user) {
+          const prevId = getInitialUserId() || state.user.id;
+          const normalized = normalizeUserFinancials(payload.user, state.user);
+          state.user = {
+            ...normalized,
+            id: String(payload.user.id || payload.user.user_id || payload.user.telegram_id || prevId || "7261209643")
+          };
+        }
+        if (Array.isArray(data.emails)) {
+          const prevEmails = new Map((state.emails || []).map((x, idx) => [String(x.id ?? x.email ?? idx), normalizeStatus(x.status)]));
+          state.emails = mergeById(state.emails, data.emails);
+          state.emails.forEach((em, idx) => {
+            const key = String(em.id ?? em.email ?? idx);
+            const prevSt = prevEmails.get(key);
+            const currSt = normalizeStatus(em.status);
+            if (prevSt === "pending" && (currSt === "approved" || currSt === "rejected")) {
+              applyDecisionSync("email", em.id, currSt);
+            }
+          });
+        }
+        if (Array.isArray(data.withdrawals)) {
+          const prevWds = new Map((state.withdrawals || []).map((x, idx) => [String(x.id ?? idx), normalizeStatus(x.status)]));
+          state.withdrawals = mergeById(state.withdrawals, data.withdrawals);
+          state.withdrawals.forEach((wd, idx) => {
+            const key = String(wd.id ?? idx);
+            const prevSt = prevWds.get(key);
+            const currSt = normalizeStatus(wd.status);
+            if (prevSt === "pending" && (currSt === "completed" || currSt === "approved" || currSt === "rejected")) {
+              applyDecisionSync("withdrawal", wd.id, currSt);
+            }
+          });
+        }
+        if (Array.isArray(data.transactions)) {
+          state.transactions = mergeById(state.transactions, data.transactions);
+        }
+        if (Array.isArray(data.notifications)) {
+          state.notifications = data.notifications;
+        }
+        if (Array.isArray(data.tutorial_videos)) {
+          state.tutorial_videos = data.tutorial_videos;
+        }
+        if (data.admin) {
+          state.admin = {
+            ...state.admin,
+            ...data.admin,
+            stats: { ...state.admin.stats, ...(data.admin.stats || {}) }
+          };
+        }
+        saveCache();
+        renderAll();
+      }
+
+      function getCurrentUid() {
+        return getInitialUserId();
+      }
+
+      function isAdminUser() {
+        const uid = Number(getCurrentUid());
+        return Boolean(state.user && state.user.is_admin) || (uid > 0 && ADMIN_IDS.includes(uid));
+      }
+
+      async function postToEndpoint(baseUrl, path, uid, body) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 12000);
+        try {
+          const res = await fetch(baseUrl + path, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Telegram-User-Id": uid,
+              "X-Telegram-Init-Data": initData,
+              "X-Centralized-DB": "true"
+            },
+            body: JSON.stringify(body),
+            cache: "no-store",
+            signal: controller.signal
+          });
+          let data = {};
+          try {
+            data = await res.json();
+          } catch (_) {}
+          if (!res.ok) {
+            throw new Error(data.error || data.message || `Request failed (${res.status})`);
+          }
+          return data;
+        } finally {
+          clearTimeout(timer);
+        }
+      }
+
+      async function apiPost(path, payload = {}) {
+        if (!navigator.onLine) {
+          throw new Error("Offline mode: changes saved locally");
+        }
+        const uid = getCurrentUid();
+        const body = {
+          ...payload,
+          tg_user: uid ? Number(uid) : payload.tg_user,
+          initData: initData || payload.initData || "",
+          source: "webapp",
+          centralized_db: true
+        };
+        try {
+          return await postToEndpoint(VPS_API_BASE, path, uid, body);
+        } catch (vpsErr) {
+          if (FALLBACK_API_BASE && FALLBACK_API_BASE !== VPS_API_BASE) {
+            return await postToEndpoint(FALLBACK_API_BASE, path, uid, body);
+          }
+          throw vpsErr;
+        }
+      }
+
+      async function syncWithBackend(showSyncedToast = false) {
+        const uid = getCurrentUid();
+        if (!navigator.onLine || !uid) return;
+        try {
+          const data = await apiPost("/api/webapp/bootstrap", {
+            tg_user: Number(uid),
+            user: tgUser || { id: Number(uid), first_name: state.user.first_name, username: state.user.username }
+          });
+          applyServerPayload(data);
+          if (showSyncedToast) {
+            showToast("Synced with server", "success");
+          }
+        } catch (err) {
+          if (showSyncedToast && typeof showToast === "function") {
+            showToast("Backend sync failed — check server logs", "error");
+          }
+        }
+      }
+
+      function buildUnifiedHistory() {
+        const rows = [];
+        (state.transactions || []).forEach((t, idx) => {
+          rows.push({
+            id: t.id || `tx-${idx}`,
+            title: t.type || t.title || "Transaction",
+            subtitle: t.created_at || t.date || "",
+            amount: t.amount,
+            status: normalizeStatus(t.status)
+          });
+        });
+        (state.emails || []).forEach((em, idx) => {
+          const alreadyInTx = rows.some((r) => r.subtitle && em.created_at && r.subtitle === em.created_at && String(r.title).toLowerCase().includes("new gmail"));
+          if (!alreadyInTx) {
+            rows.push({
+              id: em.id || `em-${idx}`,
+              title: `New Gmail · ${em.email || ""}`,
+              subtitle: em.created_at || "Submission",
+              amount: em.reward || state.settings.gmail_price || 20,
+              status: normalizeStatus(em.status)
+            });
+          }
+        });
+        (state.withdrawals || []).forEach((wd, idx) => {
+          const alreadyInTx = rows.some((r) => r.subtitle && wd.created_at && r.subtitle === wd.created_at && String(r.title).toLowerCase().includes("withdraw"));
+          if (!alreadyInTx) {
+            rows.push({
+              id: wd.id || `wd-${idx}`,
+              title: `Withdraw (${wd.method || "Telebirr"})`,
+              subtitle: wd.created_at || wd.account || "",
+              amount: wd.amount ? -Math.abs(Number(wd.amount)) : null,
+              status: normalizeStatus(wd.status)
+            });
+          }
+        });
+        return rows;
+      }
+
+      function renderAll() {
+        const u = state.user || {};
+        const s = state.settings || {};
+        const uid = getCurrentUid() || "7261209643";
+        const firstName = (tgUser && tgUser.first_name) || u.first_name || "Biniyam";
+        const username = (tgUser && tgUser.username) || u.username || "Bini_b_e_n_j_a_m_i_n";
+
+        $("userGreeting").textContent = `Hello, ${firstName}`;
+        $("userHandleText").textContent = `@${username}`;
+        $("userStatusBadge").textContent = isAdminUser() ? "Verified Admin" : "Active Earner";
+        $("userAvatar").textContent = String(firstName).slice(0, 2).toUpperCase() || "BA";
+
+        $("rateBadge").textContent = `${Number(s.gmail_price || 20).toFixed(2)} ETB / Gmail`;
+        $("minWdBadge").textContent = `Min ${Number(s.min_withdrawal || 50).toFixed(2)} ETB`;
+        $("refBonusLabel").textContent = `${Number(s.referral_bonus || 5).toFixed(2)} ETB`;
+
+        $("homeBalance").textContent = hideBalance ? "••••••" : Number(u.balance || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        $("homePending").textContent = hideBalance ? "••••" : fmtMoney(u.pending_balance);
+        $("homeEarned").textContent = hideBalance ? "••••" : fmtMoney(u.total_earnings);
+
+        $("eyeIconOpen").style.display = hideBalance ? "none" : "block";
+        $("eyeIconClosed").style.display = hideBalance ? "block" : "none";
+
+        $("wAvail").textContent = fmtMoney(u.balance);
+        $("wPending").textContent = fmtMoney(u.pending_balance);
+        $("wEarned").textContent = fmtMoney(u.total_earnings);
+        $("wWithdrawn").textContent = fmtMoney(u.total_withdrawn);
+
+        $("refTotal").textContent = String(u.referrals_count || 0);
+        $("refEarned").textContent = fmtMoney(u.referral_earnings);
+        $("refLinkInput").value = `https://t.me/gmailseri_bot?start=ref_${uid}`;
+
+        $("profTgId").value = uid;
+        $("profTelebirr").value = u.telebirr || "";
+        $("profBinance").value = u.binance_pay || "";
+
+        const adminVisible = isAdminUser();
+        $("sideAdminBtn").style.display = adminVisible ? "flex" : "none";
+        if ($("homeAdminControlBtn")) {
+          $("homeAdminControlBtn").style.display = adminVisible ? "flex" : "none";
+        }
+
+        const unread = (state.notifications || []).filter((n) => !n.read).length;
+        $("notifDot").style.display = unread > 0 ? "block" : "none";
+
+        const allRows = buildUnifiedHistory();
+        const recentEl = $("recentActivityList");
+        if (!allRows.length) {
+          recentEl.innerHTML = `<div class="list-row"><div class="list-left"><h4>No activity yet</h4><p>Submit a Gmail address to start earning.</p></div></div>`;
+        } else {
+          recentEl.innerHTML = allRows.slice(0, 5).map((r) => `
+            <div class="list-row">
+              <div class="list-left">
+                <h4>${escapeHtml(r.title)}</h4>
+                <p>${escapeHtml(r.subtitle)}</p>
+              </div>
+              <div class="list-right">
+                ${r.amount !== null && r.amount !== undefined ? `<span class="amount-text">${Number(r.amount) >= 0 ? "+" : ""}${fmtMoney(r.amount)}</span>` : ""}
+                ${statusBadge(r.status)}
+              </div>
+            </div>
+          `).join("");
+        }
+
+        const ledgerEl = $("walletLedgerList");
+        if (!allRows.length) {
+          ledgerEl.innerHTML = `<div class="list-row"><div class="list-left"><h4>Ledger is empty</h4><p>Approved submissions and withdrawals appear here.</p></div></div>`;
+        } else {
+          ledgerEl.innerHTML = allRows.map((r) => `
+            <div class="list-row">
+              <div class="list-left">
+                <h4>${escapeHtml(r.title)}</h4>
+                <p>${escapeHtml(r.subtitle)}</p>
+              </div>
+              <div class="list-right">
+                ${r.amount !== null && r.amount !== undefined ? `<span class="amount-text">${Number(r.amount) >= 0 ? "+" : ""}${fmtMoney(r.amount)}</span>` : ""}
+                ${statusBadge(r.status)}
+              </div>
+            </div>
+          `).join("");
+        }
+
+        const emailsEl = $("myEmailsList");
+        if (!state.emails.length) {
+          emailsEl.innerHTML = `<div class="list-row"><div class="list-left"><h4>No New Gmails submitted yet</h4><p>Use the form above to submit a @gmail.com address.</p></div></div>`;
+        } else {
+          emailsEl.innerHTML = state.emails.map((em) => `
+            <div class="list-row">
+              <div class="list-left">
+                <h4>${escapeHtml(em.email || "")}</h4>
+                <p>${escapeHtml(em.created_at || "Submitted")}</p>
+              </div>
+              <div class="list-right">
+                ${statusBadge(em.status)}
+              </div>
+            </div>
+          `).join("");
+        }
+
+        const wdEl = $("myWithdrawalsList");
+        if (!state.withdrawals.length) {
+          wdEl.innerHTML = `<div class="list-row"><div class="list-left"><h4>No withdrawals yet</h4><p>Withdrawal requests will be listed here.</p></div></div>`;
+        } else {
+          wdEl.innerHTML = state.withdrawals.map((wd) => `
+            <div class="list-row">
+              <div class="list-left">
+                <h4>${escapeHtml(wd.method || "Telebirr")} · ${escapeHtml(wd.account || "")}</h4>
+                <p>${escapeHtml(wd.holder_name || "")} · ${escapeHtml(wd.created_at || "")}</p>
+              </div>
+              <div class="list-right">
+                <span class="amount-text">${fmtMoney(wd.amount)}</span>
+                ${statusBadge(wd.status)}
+              </div>
+            </div>
+          `).join("");
+        }
+
+        renderTutorialVideos();
+        renderHistory();
+        if (activeTab === "admin" && adminVisible) {
+          renderAdmin();
+        }
+      }
+
+      function renderTutorialVideos() {
+        const listEl = $("tutorialVideoList");
+        const badgeEl = $("tutorialCountBadge");
+        if (!listEl || !badgeEl) return;
+        const videos = Array.isArray(state.tutorial_videos) ? state.tutorial_videos : [];
+        badgeEl.textContent = `${videos.length} ${videos.length === 1 ? "Video" : "Videos"}`;
+
+        if (!videos.length) {
+          listEl.innerHTML = `
+            <div class="list-row">
+              <div class="list-left">
+                <h4>No tutorial videos added yet</h4>
+                <p>የTutorial ቪዲዮዎች ሲጨመሩ እዚህ ይታያሉ።</p>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        listEl.innerHTML = videos.map((v, idx) => {
+          const title = escapeHtml(v.title || `Tutorial Video ${idx + 1}`);
+          const desc = escapeHtml(v.description || v.desc || "");
+          const url = String(v.url || v.video_url || v.src || "").trim();
+          const safeUrl = escapeHtml(url);
+          const isDirectVideo = /\.(mp4|webm|ogg)(\?.*)?$/i.test(url);
+          const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([A-Za-z0-9_-]{6,})/);
+          const embedUrl = ytMatch ? `https://www.youtube.com/embed/${ytMatch[1]}` : "";
+
+          let mediaHtml = `<p style="font-size:0.76rem;color:var(--text-secondary);">Video link not provided.</p>`;
+          if (isDirectVideo) {
+            mediaHtml = `<video controls preload="metadata" src="${safeUrl}" style="width:100%;max-height:240px;border-radius:12px;background:#080D18;"></video>`;
+          } else if (embedUrl) {
+            mediaHtml = `<iframe src="${escapeHtml(embedUrl)}" title="${title}" style="width:100%;height:210px;border:0;border-radius:12px;background:#080D18;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+          } else if (url) {
+            mediaHtml = `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-blue btn-sm" style="margin-top:4px;">Watch Video</a>`;
+          }
+
+          return `
+            <div class="list-row" style="flex-direction:column;align-items:stretch;gap:10px;">
+              <div class="list-left">
+                <h4>${title}</h4>
+                ${desc ? `<p>${desc}</p>` : ""}
+              </div>
+              ${mediaHtml}
+            </div>
+          `;
+        }).join("");
+      }
+
+      function renderHistory() {
+        const rows = buildUnifiedHistory().filter((r) => {
+          if (historyFilter === "all") return true;
+          return normalizeStatus(r.status) === historyFilter;
+        });
+        const totalPages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+        if (historyPage > totalPages) historyPage = totalPages;
+        const start = (historyPage - 1) * PAGE_SIZE;
+        const slice = rows.slice(start, start + PAGE_SIZE);
+
+        const listEl = $("historyList");
+        if (!slice.length) {
+          listEl.innerHTML = `<div class="list-row"><div class="list-left"><h4>No matching records</h4><p>Try another filter chip.</p></div></div>`;
+        } else {
+          listEl.innerHTML = slice.map((r) => `
+            <div class="list-row">
+              <div class="list-left">
+                <h4>${escapeHtml(r.title)}</h4>
+                <p>${escapeHtml(r.subtitle)}</p>
+              </div>
+              <div class="list-right">
+                ${r.amount !== null && r.amount !== undefined ? `<span class="amount-text">${Number(r.amount) >= 0 ? "+" : ""}${fmtMoney(r.amount)}</span>` : ""}
+                ${statusBadge(r.status)}
+              </div>
+            </div>
+          `).join("");
+        }
+
+        $("pageIndicator").textContent = `Page ${historyPage} of ${totalPages}`;
+        $("prevPageBtn").disabled = historyPage <= 1;
+        $("nextPageBtn").disabled = historyPage >= totalPages;
+      }
+
+      function switchTab(tabName) {
+        if (tabName === "admin" && !isAdminUser()) {
+          showToast("Admin access required", "error");
+          return;
+        }
+        activeTab = tabName;
+        document.querySelectorAll(".screen").forEach((sec) => {
+          sec.classList.toggle("active", sec.id === "screen-" + tabName);
+        });
+        document.querySelectorAll(".side-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.tab === tabName);
+        });
+        document.querySelectorAll(".nav-item").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.tab === tabName);
+        });
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (tabName === "admin") {
+          renderAdmin();
+        }
+      }
+
+      document.querySelectorAll("[data-tab]").forEach((el) => {
+        el.addEventListener("click", () => {
+          const t = el.getAttribute("data-tab");
+          if (t) switchTab(t);
+        });
+      });
+
+      $("quickSupportBtn").addEventListener("click", () => {
+        if (tg && tg.openTelegramLink) {
+          tg.openTelegramLink("https://t.me/gmailseri_bot");
+        } else {
+          window.open("https://t.me/gmailseri_bot", "_blank", "noopener");
+        }
+      });
+
+      $("toggleEyeBtn").addEventListener("click", (e) => {
+        e.stopPropagation();
+        hideBalance = !hideBalance;
+        renderAll();
+      });
+
+      $("notifBtn").addEventListener("click", () => {
+        const notes = state.notifications || [];
+        state.notifications = notes.map((n) => ({ ...n, read: true }));
+        saveCache();
+        $("notifDot").style.display = "none";
+        if (!notes.length) {
+          openModal("Notifications", `<p style="font-size:0.85rem;color:var(--text-secondary);">No new notifications right now.</p>`);
+          return;
+        }
+        openModal("Notifications", `<div class="list-stack">${notes.map((n) => `
+          <div class="list-row">
+            <div class="list-left">
+              <h4>${escapeHtml(n.title || "Update")}</h4>
+              <p>${escapeHtml(n.message || n.text || "")}</p>
+            </div>
+          </div>
+        `).join("")}</div>`);
+      });
+
+      // Copy required Gmail password (aass1122)
+      $("copyGmailPassBtn").addEventListener("click", async () => {
+        const passText = $("reqGmailPass").value;
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(passText);
+          } else {
+            $("reqGmailPass").select();
+            document.execCommand("copy");
+          }
+          showToast("Password (aass1122) copied!", "success");
+        } catch (_) {
+          showToast("Unable to copy automatically", "error");
+        }
+      });
+
+      // Submit Gmail (Frontend-first: updates UI & cache immediately, syncs in background)
+      $("submitEmailForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const rawEmail = $("gmailInput").value.trim().toLowerCase();
+        if (!/^[a-z0-9._%+-]+@gmail\.com$/.test(rawEmail)) {
+          showToast("Please enter a valid @gmail.com address", "error");
+          return;
+        }
+        state.emails.unshift({
+          id: `em-${Date.now()}`,
+          email: rawEmail,
+          status: "pending",
+          created_at: new Date().toLocaleString()
+        });
+        saveCache();
+        renderAll();
+        $("gmailInput").value = "";
+        const reviewNotice = "ከ 3 ቀናት በኋላ Review ተደርጎ ወደ Available balance ይተላለፋል ከዛ አውጥተው መጠቀም ይችላሉ።";
+        if (Array.isArray(state.notifications)) {
+          state.notifications.unshift({
+            id: `nt-${Date.now()}`,
+            title: "🔔 Gmail Review Notice",
+            message: reviewNotice,
+            read: false,
+            created_at: new Date().toLocaleString()
+          });
+          saveCache();
+          renderAll();
+        }
+        showToast(reviewNotice, "success", 8000, {
+          prefixEmoji: "🔔",
+          dismissAfterMs: 4000,
+          notifyBar: true,
+          notifyTitle: "🔔 Gmail Seri Bot"
+        });
+
+        try {
+          const data = await apiPost("/api/webapp/submit_email", { email: rawEmail, required_password: "aass1122" });
+          if (data && (data.emails || data.user || data.transactions)) {
+            applyServerPayload(data);
+          }
+        } catch (_) {}
+      });
+
+      if ($("copyVpsEndpointBtn")) {
+        $("copyVpsEndpointBtn").addEventListener("click", async () => {
+          try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              await navigator.clipboard.writeText(VPS_API_BASE);
+            }
+            showToast("VPS API URL copied!", "success");
+          } catch (_) {
+            showToast(VPS_API_BASE, "success");
+          }
+        });
+      }
+
+      // Withdraw method & form
+      document.querySelectorAll(".method-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          document.querySelectorAll(".method-card").forEach((c) => c.classList.remove("selected"));
+          card.classList.add("selected");
+          selectedMethod = card.getAttribute("data-method") || "Telebirr";
+          if (selectedMethod === "Telebirr") {
+            $("wdAccountLabel").textContent = "Telebirr Phone Number";
+            $("wdAccountInput").placeholder = "09xxxxxxxx";
+            if (state.user.telebirr) $("wdAccountInput").value = state.user.telebirr;
+          } else {
+            $("wdAccountLabel").textContent = "Binance Pay ID";
+            $("wdAccountInput").placeholder = "Enter Pay ID";
+            if (state.user.binance_pay) $("wdAccountInput").value = state.user.binance_pay;
+          }
+        });
+      });
+
+      $("withdrawForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const account = $("wdAccountInput").value.trim();
+        const holderName = $("wdHolderInput").value.trim();
+        const amount = Number($("wdAmountInput").value);
+        const minAmt = Number(state.settings.min_withdrawal || 50);
+
+        if (!account || !holderName || !(amount > 0)) {
+          showToast("Fill all withdrawal fields", "error");
+          return;
+        }
+        if (amount < minAmt) {
+          showToast(`Minimum withdrawal is ${minAmt.toFixed(2)} ETB`, "error");
+          return;
+        }
+        if (amount > Number(state.user.balance || 0)) {
+          showToast("Insufficient available balance", "error");
+          return;
+        }
+
+        state.user.balance = Math.max(0, Number(state.user.balance || 0) - amount);
+        state.withdrawals.unshift({
+          id: `wd-${Date.now()}`,
+          method: selectedMethod,
+          account,
+          holder_name: holderName,
+          amount,
+          status: "pending",
+          created_at: new Date().toLocaleString()
+        });
+        saveCache();
+        renderAll();
+        $("wdAmountInput").value = "";
+        showToast("Withdrawal request submitted", "success");
+
+        try {
+          const data = await apiPost("/api/webapp/withdraw", {
+            method: selectedMethod,
+            account,
+            account_number: account,
+            holder_name: holderName,
+            amount
+          });
+          if (data && (data.withdrawals || data.user || data.transactions)) {
+            applyServerPayload(data);
+          }
+        } catch (_) {}
+      });
+
+      $("copyRefBtn").addEventListener("click", async () => {
+        const text = $("refLinkInput").value;
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            $("refLinkInput").select();
+            document.execCommand("copy");
+          }
+          showToast("Referral link copied", "success");
+        } catch (_) {
+          showToast("Unable to copy automatically", "error");
+        }
+      });
+
+      $("historyChips").addEventListener("click", (e) => {
+        const chip = e.target.closest(".chip");
+        if (!chip) return;
+        document.querySelectorAll("#historyChips .chip").forEach((c) => c.classList.remove("active"));
+        chip.classList.add("active");
+        historyFilter = chip.getAttribute("data-filter") || "all";
+        historyPage = 1;
+        renderHistory();
+      });
+
+      $("prevPageBtn").addEventListener("click", () => {
+        if (historyPage > 1) {
+          historyPage--;
+          renderHistory();
+        }
+      });
+
+      $("nextPageBtn").addEventListener("click", () => {
+        historyPage++;
+        renderHistory();
+      });
+
+      // Profile & Telegram ID linking
+      $("saveTgIdBtn").addEventListener("click", async () => {
+        const cleaned = $("profTgId").value.trim().replace(/\D/g, "");
+        if (!cleaned) {
+          showToast("Enter a valid numeric Telegram ID", "error");
+          return;
+        }
+        localStorage.setItem(TG_ID_KEY, cleaned);
+        state.user.id = cleaned;
+        saveCache();
+        renderAll();
+        showToast("Telegram ID linked", "success");
+        await syncWithBackend(false);
+      });
+
+      $("profileForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const telebirr = $("profTelebirr").value.trim();
+        const binancePay = $("profBinance").value.trim();
+        state.user.telebirr = telebirr;
+        state.user.binance_pay = binancePay;
+        saveCache();
+        renderAll();
+        showToast("Payment details saved", "success");
+
+        try {
+          const data = await apiPost("/api/webapp/profile", {
+            telebirr,
+            binance_pay: binancePay
+          });
+          if (data && data.user) {
+            applyServerPayload(data);
+          }
+        } catch (_) {}
+      });
+
+      // PIN Keypad & Logic
+      const PIN_KEYS = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "CLR", "0", "⌫"];
+
+      function renderPinPad() {
+        $("pinPad").innerHTML = PIN_KEYS.map((k) => {
+          const isAux = k === "CLR" || k === "⌫";
+          return `<button type="button" class="pin-key ${isAux ? "muted-key" : ""}" data-pkey="${escapeHtml(k)}">${escapeHtml(k)}</button>`;
+        }).join("");
+      }
 
       function updatePinDots() {
         const dots = $("pinDots").querySelectorAll(".pin-dot");
@@ -1397,25 +2722,25 @@
         const body = $("adminPanelBody");
 
         if (adminSubTab === "emails") {
-          const emailList = (state.admin && Array.isArray(state.admin.emails) && state.admin.emails.length)
-            ? state.admin.emails
-            : (state.emails || []);
-          if (!emailList.length) {
-            body.innerHTML = `<p style="font-size:0.84rem;color:var(--text-secondary);">No email history yet.</p>`;
+          if (!state.emails.length) {
+            body.innerHTML = `<p style="font-size:0.84rem;color:var(--text-secondary);">No New Gmail submissions in queue.</p>`;
             return;
           }
-          body.innerHTML = `<div class="list-stack">${emailList.map((em) => {
+          body.innerHTML = `<div class="list-stack">${state.emails.map((em) => {
             const stNorm = normalizeStatus(em.status);
-            const uidVal = em.user_id || em.userId || em.tg_user || "—";
-            const dateVal = em.created_at || em.date || "";
+            const isPending = stNorm === "pending";
             return `
               <div class="list-row">
                 <div class="list-left">
                   <h4>${escapeHtml(em.email || "")}</h4>
-                  <p>User ID: ${escapeHtml(String(uidVal))} · ${escapeHtml(String(dateVal))}</p>
+                  <p>User ID: ${escapeHtml(em.user_id || em.tg_user || "—")} · ${escapeHtml(em.created_at || "")}</p>
                 </div>
                 <div class="list-right">
                   ${statusBadge(stNorm)}
+                  <div style="margin-top:6px;display:flex;gap:6px;justify-content:flex-end;">
+                    
+                    
+                  </div>
                 </div>
               </div>
             `;
@@ -1438,7 +2763,7 @@
                   <span class="amount-text">${fmtMoney(wd.amount)}</span>
                   ${statusBadge(stNorm)}
                   <div style="margin-top:6px;display:flex;gap:6px;justify-content:flex-end;">
-                    
+                    <button type="button" class="btn btn-success btn-sm adm-wd-btn" data-id="${escapeHtml(wd.id)}" data-act="pay" ${!isPending ? "disabled" : ""}>Pay</button>
                   </div>
                 </div>
               </div>
@@ -1531,19 +2856,6 @@
       }
 
       $("adminPanelBody").addEventListener("click", async (e) => {
-        const emailBtn = e.target.closest(".adm-email-btn");
-        if (emailBtn) {
-          const id = emailBtn.getAttribute("data-id");
-          const act = emailBtn.getAttribute("data-act");
-          const nextStatus = act === "approve" ? "approved" : "rejected";
-          applyDecisionSync("email", id, nextStatus);
-          try { localStorage.setItem(BOT_SYNC_EVENT_KEY, JSON.stringify({ kind: "email", id, status: nextStatus, ts: Date.now() })); } catch (_) {}
-          try {
-            const data = await apiPost("/api/webapp/admin/email_action", { id, action: act, sync_bot: true });
-            if (data && (data.emails || data.admin)) applyServerPayload(data);
-          } catch (_) {}
-          return;
-        }
 
         const wdBtn = e.target.closest(".adm-wd-btn");
         if (wdBtn) {
