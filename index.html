@@ -3013,31 +3013,61 @@
         }
       };
 
+      function dismissSplashSafely() {
+        try {
+          const splash = document.getElementById("splashScreen") || (typeof $ === "function" ? $("splashScreen") : null);
+          if (splash) {
+            splash.classList.add("hide");
+            splash.style.opacity = "0";
+            splash.style.pointerEvents = "none";
+            setTimeout(() => {
+              try { splash.style.display = "none"; } catch (_) {}
+            }, 300);
+          }
+        } catch (_) {}
+      }
+
+      window.addEventListener("error", () => {
+        dismissSplashSafely();
+      });
+      window.addEventListener("unhandledrejection", () => {
+        dismissSplashSafely();
+      });
+
       // Boot sequence: Splash -> PIN Gate -> Notification Access Prompt -> Daily Reminder & Sync
-      renderPinPad();
-      renderAll();
+      try { renderPinPad(); } catch (_) {}
+      try { renderAll(); } catch (_) {}
+
+      // Hard safety timeout so splash never stays stuck
+      setTimeout(dismissSplashSafely, 1800);
 
       setTimeout(() => {
-        $("splashScreen").classList.add("hide");
-        const afterUnlock = () => {
-          promptNotificationAccessModal(() => {
-            runDailyReminderCheck();
-          });
-        };
-        const pinEnabled = localStorage.getItem(PIN_ENABLED_KEY) !== "false";
-        const savedPin = localStorage.getItem(PIN_KEY);
-        if (pinEnabled) {
-          openPinGate(savedPin ? "unlock" : "create");
-          const origUnlock = unlockApp;
-          unlockApp = function () {
-            origUnlock();
-            afterUnlock();
+        dismissSplashSafely();
+        try {
+          const afterUnlock = () => {
+            try {
+              promptNotificationAccessModal(() => {
+                try { runDailyReminderCheck(); } catch (_) {}
+              });
+            } catch (_) {}
           };
-        } else {
-          unlockApp();
-          afterUnlock();
+          const pinEnabled = localStorage.getItem(PIN_ENABLED_KEY) !== "false";
+          const savedPin = localStorage.getItem(PIN_KEY);
+          if (pinEnabled) {
+            openPinGate(savedPin ? "unlock" : "create");
+            const origUnlock = unlockApp;
+            unlockApp = function () {
+              try { origUnlock(); } catch (_) {}
+              afterUnlock();
+            };
+          } else {
+            try { unlockApp(); } catch (_) {}
+            afterUnlock();
+          }
+        } catch (_) {
+          dismissSplashSafely();
         }
-      }, 1550);
+      }, 1450);
     })();
   </script>
 </body>
