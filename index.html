@@ -1074,6 +1074,25 @@
   <div id="splashScreen" class="splash-screen">
     <div class="splash-box">
       <div class="splash-logo">GS</div>
+<script id="FORCE_SPLASH_TIMER">
+(function () {
+  function forceHideSplash() {
+    var el = document.getElementById("splashScreen");
+    if (el) {
+      el.classList.add("hide");
+      el.style.setProperty("opacity", "0", "important");
+      el.style.setProperty("visibility", "hidden", "important");
+      el.style.setProperty("pointer-events", "none", "important");
+      setTimeout(function () {
+        el.style.setProperty("display", "none", "important");
+      }, 250);
+    }
+  }
+  window.addEventListener("error", forceHideSplash);
+  window.addEventListener("unhandledrejection", forceHideSplash);
+  setTimeout(forceHideSplash, 1600);
+})();
+</script>
       <div class="splash-title">Gmail Seri Bot</div>
       <div class="splash-sub">Digital Services &amp; Earning Platform</div>
       <div class="splash-bar"><i></i></div>
