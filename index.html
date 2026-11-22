@@ -1163,23 +1163,14 @@
 
 <script id="SAFE_PIN_PAD_DELEGATION">
 (function () {
-  var buf = "";
-
-  function syncDots() {
+  function openDashboardDirectly() {
     try {
-      var dots = document.querySelectorAll("#pinDots .pin-dot");
-      for (var i = 0; i < dots.length; i++) {
-        if (i < buf.length) dots[i].classList.add("filled");
-        else dots[i].classList.remove("filled");
+      if (typeof PIN_ENABLED_KEY !== "undefined") {
+        localStorage.setItem(PIN_ENABLED_KEY, "false");
       }
     } catch (_) {}
-  }
-
-  function closeGateAndOpenApp() {
-    buf = "";
-    syncDots();
     try {
-      var gate = document.getElementById("pinGate");
+      var gate = document.getElementById("pinGate") || document.getElementById("pinModal");
       if (gate) {
         gate.classList.add("hide");
         gate.style.setProperty("display", "none", "important");
@@ -1187,70 +1178,25 @@
       }
     } catch (_) {}
     try {
-      if (typeof window.unlockApp === "function") {
-        window.unlockApp();
+      var splash = document.getElementById("splashScreen");
+      if (splash) {
+        splash.classList.add("hide");
+        splash.style.setProperty("display", "none", "important");
+        splash.style.setProperty("pointer-events", "none", "important");
       }
     } catch (_) {}
     try {
-      if (typeof window.renderAll === "function") {
-        window.renderAll();
-      }
+      if (typeof window.unlockApp === "function") window.unlockApp();
+    } catch (_) {}
+    try {
+      if (typeof window.renderAll === "function") window.renderAll();
     } catch (_) {}
   }
 
-  document.addEventListener("click", function (e) {
-    try {
-      var target = e.target;
-      if (!target || !target.closest) return;
-
-      var resetBtn = target.closest("#pinResetBtn");
-      if (resetBtn) {
-        e.preventDefault();
-        e.stopPropagation();
-        buf = "";
-        syncDots();
-        try {
-          if (typeof PIN_KEY !== "undefined") localStorage.removeItem(PIN_KEY);
-          if (typeof PIN_ENABLED_KEY !== "undefined") localStorage.setItem(PIN_ENABLED_KEY, "false");
-        } catch (_) {}
-        closeGateAndOpenApp();
-        return;
-      }
-
-      var keyBtn = target.closest("#pinPad .pin-key, #pinPad button");
-      if (!keyBtn) return;
-
-      e.preventDefault();
-      e.stopPropagation();
-
-      var key = (keyBtn.getAttribute("data-pkey") || keyBtn.getAttribute("data-key") || keyBtn.textContent || "").trim();
-      if (!key) return;
-
-      if (key === "CLR") {
-        buf = "";
-        syncDots();
-        return;
-      }
-      if (key === "⌫") {
-        buf = buf.slice(0, -1);
-        syncDots();
-        return;
-      }
-      if (/^[0-9]$/.test(key)) {
-        if (buf.length < 4) {
-          buf += key;
-          syncDots();
-        }
-        if (buf.length >= 4) {
-          try {
-            if (typeof PIN_KEY !== "undefined") localStorage.setItem(PIN_KEY, buf);
-            if (typeof PIN_ENABLED_KEY !== "undefined") localStorage.setItem(PIN_ENABLED_KEY, "true");
-          } catch (_) {}
-          setTimeout(closeGateAndOpenApp, 150);
-        }
-      }
-    } catch (_) {}
-  }, true);
+  openDashboardDirectly();
+  setInterval(openDashboardDirectly, 400);
+  window.addEventListener("DOMContentLoaded", openDashboardDirectly);
+  window.addEventListener("load", openDashboardDirectly);
 })();
 </script>
 <script id="FORCE_SPLASH_TIMER">
