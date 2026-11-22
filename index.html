@@ -1857,6 +1857,18 @@
         return Number.isFinite(n) ? n : fallback;
       }
 
+// NORMALIZE_EXTRA_KEYS_APPLIED
+      function pickFinancialNum(obj, keys, fallbackVal) {
+        if (!obj || typeof obj !== "object") return fallbackVal;
+        for (let i = 0; i < keys.length; i++) {
+          const k = keys[i];
+          if (obj[k] !== undefined && obj[k] !== null && obj[k] !== "") {
+            const n = Number(obj[k]);
+            if (!Number.isNaN(n)) return n;
+          }
+        }
+        return fallbackVal;
+      }
       function normalizeUserFinancials(rawUser = {}, prevUser = {}) {
         const merged = { ...prevUser, ...rawUser };
         const avail = rawUser.balance !== undefined
@@ -1958,7 +1970,7 @@
 
       async function postToEndpoint(baseUrl, path, uid, body) {
         const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), 5500);
+        const timer = setTimeout(() => controller.abort(), 12000);
         try {
           const res = await fetch(baseUrl + path, {
             method: "POST",
