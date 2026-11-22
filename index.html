@@ -1160,6 +1160,101 @@
   }, true);
 })();
 </script>
+
+<script id="SAFE_PIN_PAD_DELEGATION">
+(function () {
+  var buf = "";
+  function syncDots() {
+    try {
+      var dots = document.querySelectorAll("#pinDots .pin-dot, .pin-dot, [data-pin-dot]");
+      if (dots && dots.length) {
+        for (var i = 0; i < dots.length; i++) {
+          if (i < buf.length) dots[i].classList.add("filled", "active");
+          else dots[i].classList.remove("filled", "active");
+        }
+      }
+    } catch (_) {}
+  }
+
+  function finishUnlock() {
+    buf = "";
+    syncDots();
+    try {
+      var gate = document.getElementById("pinGate") || document.getElementById("pinModal");
+      if (gate) {
+        gate.classList.remove("show", "active", "open");
+        gate.classList.add("hide", "hidden");
+        gate.style.setProperty("display", "none", "important");
+        gate.style.setProperty("pointer-events", "none", "important");
+      }
+    } catch (_) {}
+    try { if (typeof unlockApp === "function") unlockApp(); } catch (_) {}
+    try { if (typeof renderAll === "function") renderAll(); } catch (_) {}
+  }
+
+  document.addEventListener("click", function (e) {
+    try {
+      var target = e.target;
+      if (!target || !target.closest) return;
+
+      var resetEl = target.closest("#pinResetBtn, [data-pin-reset], a, button");
+      if (resetEl && /forgot pin|reset/i.test(resetEl.textContent || "")) {
+        e.preventDefault();
+        buf = "";
+        syncDots();
+        try {
+          if (typeof PIN_KEY !== "undefined") localStorage.removeItem(PIN_KEY);
+          if (typeof PIN_ENABLED_KEY !== "undefined") localStorage.setItem(PIN_ENABLED_KEY, "false");
+        } catch (_) {}
+        finishUnlock();
+        return;
+      }
+
+      var keyBtn = target.closest("#pinPad button, #pinPad .pin-key, .pin-key, [data-key], [data-pin]");
+      if (!keyBtn) return;
+
+      var raw = (keyBtn.getAttribute("data-key") || keyBtn.getAttribute("data-pin") || keyBtn.textContent || "").trim();
+      if (!raw) return;
+
+      if (typeof handlePinDigit === "function") {
+        var beforeLen = buf.length;
+        try { handlePinDigit(raw); } catch (_) {}
+        // If native handler didn't advance state, handle buffer fallback
+        if (/^[0-9]$/.test(raw) && buf.length < 4) {
+          buf += raw;
+          syncDots();
+          if (buf.length >= 4) {
+            setTimeout(finishUnlock, 180);
+          }
+        } else if (/^clr$/i.test(raw)) {
+          buf = "";
+          syncDots();
+        } else if (raw === "⌫" || /back|del/i.test(raw)) {
+          buf = buf.slice(0, -1);
+          syncDots();
+        }
+        return;
+      }
+
+      if (/^[0-9]$/.test(raw)) {
+        if (buf.length < 4) {
+          buf += raw;
+          syncDots();
+          if (buf.length >= 4) {
+            setTimeout(finishUnlock, 180);
+          }
+        }
+      } else if (/^clr$/i.test(raw)) {
+        buf = "";
+        syncDots();
+      } else if (raw === "⌫" || /back|del/i.test(raw)) {
+        buf = buf.slice(0, -1);
+        syncDots();
+      }
+    } catch (_) {}
+  }, true);
+})();
+</script>
 <script id="FORCE_SPLASH_TIMER">
 (function () {
   function forceHideSplash() {
