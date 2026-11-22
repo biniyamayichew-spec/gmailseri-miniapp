@@ -1074,6 +1074,25 @@
   <div id="splashScreen" class="splash-screen">
     <div class="splash-box">
       <div class="splash-logo">GS</div>
+
+<script id="DIAG_ERR_LISTENER">
+(function () {
+  window.__APP_ERRORS__ = window.__APP_ERRORS__ || [];
+  window.addEventListener("error", function (ev) {
+    try {
+      window.__APP_ERRORS__.push((ev && ev.message) || "Unknown error");
+      var b = document.getElementById("__diagBanner");
+      if (!b) {
+        b = document.createElement("div");
+        b.id = "__diagBanner";
+        b.style.cssText = "position:fixed;bottom:64px;left:8px;right:8px;z-index:999999;background:#7f1d1d;color:#fff;padding:8px 10px;border-radius:8px;font-size:11px;font-family:monospace;word-break:break-word;";
+        document.body.appendChild(b);
+      }
+      b.textContent = "JS Err: " + (ev.message || "") + " @" + (ev.lineno || "?");
+    } catch (_) {}
+  });
+})();
+</script>
 <script id="FORCE_SPLASH_TIMER">
 (function () {
   function forceHideSplash() {
