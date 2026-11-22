@@ -1093,6 +1093,73 @@
   });
 })();
 </script>
+
+<script id="SAFE_BUTTON_DELEGATION">
+(function () {
+  function clearBlockingOverlays() {
+    try {
+      var ids = ["pinGate", "pinModal", "modalBackdrop", "notifModal", "splashScreen"];
+      ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        if (id === "splashScreen") {
+          el.classList.add("hide");
+          el.style.setProperty("display", "none", "important");
+          el.style.setProperty("pointer-events", "none", "important");
+          return;
+        }
+        var hidden = el.classList.contains("hide") || el.classList.contains("hidden") || !el.classList.contains("show") && !el.classList.contains("active");
+        if (hidden && (id === "pinGate" || id === "pinModal" || id === "modalBackdrop" || id === "notifModal")) {
+          var cs = window.getComputedStyle(el);
+          if (cs.display === "none" || Number(cs.opacity || "1") === 0) {
+            el.style.setProperty("pointer-events", "none", "important");
+          }
+        }
+      });
+    } catch (_) {}
+  }
+
+  setInterval(clearBlockingOverlays, 500);
+  window.addEventListener("load", clearBlockingOverlays);
+
+  document.addEventListener("click", function (e) {
+    try {
+      clearBlockingOverlays();
+      var target = e.target;
+      if (!target || !target.closest) return;
+
+      // Bottom nav or elements with data-tab
+      var tabEl = target.closest("[data-tab]");
+      if (tabEl) {
+        var tName = tabEl.getAttribute("data-tab");
+        if (tName && typeof window.switchTab === "function") {
+          window.switchTab(tName);
+          return;
+        }
+      }
+
+      // Quick action cards by text fallback
+      var card = target.closest(".quick-card, .action-card, .tile, button, .nav-item");
+      if (card) {
+        var label = (card.getAttribute("data-action") || card.textContent || "").toLowerCase();
+        if (label.indexOf("wallet") !== -1 || label.indexOf("balance") !== -1) {
+          if (typeof window.switchTab === "function") window.switchTab("wallet");
+        } else if (label.indexOf("submit") !== -1 || label.indexOf("gmail") !== -1) {
+          if (typeof window.switchTab === "function") window.switchTab("submit");
+        } else if (label.indexOf("referral") !== -1) {
+          if (typeof window.switchTab === "function") window.switchTab("referrals");
+        } else if (label.indexOf("profile") !== -1) {
+          if (typeof window.switchTab === "function") window.switchTab("profile");
+        } else if (label.indexOf("history") !== -1) {
+          if (typeof window.switchTab === "function") window.switchTab("history");
+        } else if (label.indexOf("home") !== -1) {
+          if (typeof window.switchTab === "function") window.switchTab("home");
+        }
+      }
+    } catch (_) {}
+  }, true);
+})();
+</script>
 <script id="FORCE_SPLASH_TIMER">
 (function () {
   function forceHideSplash() {
