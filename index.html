@@ -1402,29 +1402,30 @@
         const body = $("adminPanelBody");
 
         if (adminSubTab === "emails") {
-          if (!state.emails.length) {
-            body.innerHTML = `<p style="font-size:0.84rem;color:var(--text-secondary);">No New Gmail submissions in queue.</p>`;
+          const emailList = (state.admin && Array.isArray(state.admin.emails) && state.admin.emails.length)
+            ? state.admin.emails
+            : (state.emails || []);
+          if (!emailList.length) {
+            body.innerHTML = `<p style="font-size:0.84rem;color:var(--text-secondary);">No email history yet.</p>`;
             return;
           }
-          body.innerHTML = `<div class="list-stack">${state.emails.map((em) => {
+          body.innerHTML = `<div class="list-stack">${emailList.map((em) => {
             const stNorm = normalizeStatus(em.status);
-            const isPending = stNorm === "pending";
+            const uidVal = em.user_id || em.userId || em.tg_user || "—";
+            const dateVal = em.created_at || em.date || "";
             return `
               <div class="list-row">
                 <div class="list-left">
                   <h4>${escapeHtml(em.email || "")}</h4>
-                  <p>User ID: ${escapeHtml(em.user_id || em.tg_user || "—")} · ${escapeHtml(em.created_at || "")}</p>
+                  <p>User ID: ${escapeHtml(String(uidVal))} · ${escapeHtml(String(dateVal))}</p>
                 </div>
                 <div class="list-right">
                   ${statusBadge(stNorm)}
-                  <div style="margin-top:6px;display:flex;gap:6px;justify-content:flex-end;">
-                    
-                    
-                  </div>
                 </div>
               </div>
             `;
           }).join("")}</div>`;
+        }).join("")}</div>`;
         } else if (adminSubTab === "withdrawals") {
           if (!state.withdrawals.length) {
             body.innerHTML = `<p style="font-size:0.84rem;color:var(--text-secondary);">No withdrawal requests.</p>`;
